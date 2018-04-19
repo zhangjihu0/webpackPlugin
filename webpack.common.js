@@ -11,24 +11,25 @@ module.exports = {
   module:{
     rules:[
       {//style-loader将css插入到页面的style,css-loader是处理css文件中的url()
-        test:/\.css$/,//loader执行顺序从右向左
+        test:/\.less$/,//loader执行顺序从右向左
         use:['style-loader','css-loader','postcss-loader','less-loader'],
         include:path.join(__dirname,'./src'),
         exclude:/node_modules/
       },{//处理将文件发送到输出文件夹，并返回（相对）URL，文件小于限制，可以返回 data URL
         test:/\.(jpg|png|gif|svg)$/,
         use:[{
+          loader:'file-loader',
+        },{
           loader:'url-loader',
           options:{
             limit:'1024',
             path:'./dist/img'
           }
         }],
-        include:path.join(__dirname,'./src'),
         exclude:/node_modules/
       },
       {
-        test: /\.js$/,
+        test: /\.js|jsx$/,
         use: {
           loader: 'babel-loader',
           options: {
