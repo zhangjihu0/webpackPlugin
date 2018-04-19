@@ -1,16 +1,14 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import Styles from './index.less';
-import img from '../img/app.png';
-class App extends React.Component{
+import img from 'img/app.png';
+class App extends React{
   constructor(props){
     super(props)
     this.state={
-
     }
   }
   render(){
-    retrun (
+    return (
       <div>
         <img src={img} />
       </div>
