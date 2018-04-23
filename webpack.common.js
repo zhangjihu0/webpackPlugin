@@ -1,19 +1,25 @@
 const path = require('path');
+const glob = require('glob');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin  =  require('html-webpack-plugin');
 const EXtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const PurifyCSSPlugin = require('purifycss-webpack');
 const Webpack = require('webpack');
 
-const lessExtract = new EXtractTextWebpackPlugin('less.css')//导出资源文件css.css,一定要在plugin中引入
+const lessExtract = new EXtractTextWebpackPlugin('less.css');//导出资源文件css.css,一定要在plugin中引入
 module.exports = {
   entry:path.resolve(__dirname,'./src/index'),
   output:{
     path:path.join(__dirname,'dist'),
     filename:'[name].[hash].js',
   },
+  // externals:{
+  //   jquery: 'jQuery'
+  // }
+  // },
   resolve:{
-    extensions: ["",".js",".css",".json"],
+    extensions: [".js",".css",".json"],//如果第一位是""会引起错误
     alias: {//创建 import 或 require 的别名，来确保模块引入变得更简单
       //import img from 'Utilities/utility';
       img: path.resolve(__dirname, 'img/'),
@@ -54,6 +60,9 @@ module.exports = {
           }
         },
         exclude:/node_modules/
+      },{
+        test:/^React$/,
+        loader:"expose?React"
       }
     ]
   },
@@ -78,9 +87,9 @@ module.exports = {
         //purifycss根据这个路径配置遍历你的HTML文件，查找你使用的CSS
       paths:glob.sync(path.join(__dirname,'src/*.html'))
     }),
-    new Webpack.ProvidePlugin({
-      React: 'React.Compontent',
-    }),
+    // new Webpack.ProvidePlugin({
+    //   React: 'React',
+    // }),
   ]
 
 }
